@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<p><strong>Start typing a name in the input field below:</strong></p>
+	<form>
+		First Name: <input type="text" name="text">
+	</form>
+	<p>Suggestions: <span id="hint"></span></p>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+	<script type="text/javascript">
+		$('input[name="text"]').keyup(function(){
+			var str = $(this).val();
+			if(str.length > 0) {
+				suggestion(str);
+			} else {
+				$('#hint').html('');
+			}
+		});
+
+		function suggestion(str) {
+			$.ajax({
+				url: 'hint.php',
+				method: 'POST',
+				data: {
+					str: str
+				},
+				async: true,
+				cache: false,
+				success: function(data) {
+					$('#hint').html(data);
+				},
+				error: function() {
+					console.log('Something went wrong!');
+				}
+			});
+		}
+	</script>
+</body>
+</html>
